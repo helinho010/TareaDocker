@@ -1,0 +1,63 @@
+1. Se listara todos los contenedores creados y posteriormente se pasara a eliminarlos, para crear un nuevo contenedor y montar la imagen descargada de docker hub "mongoDB".
+	Comandos:
+		* docker ps -a  (lista los contenedores que estan en funcionamiento)
+		* doker rm id_contenedor  (Elimina los contenedores con id_contenedor)
+
+2. Se listara todas las imagenes y se procedera a borrar todas ellas, se 
+   mostrar que no se tiene ninguna imagen guardada para posteriormente     descargar de la imagen de mongoDB de docker hub
+    
+ 	Comandos:
+   		* docker images (Lista todas las imagenes)
+		* docker rmi id_image (elimina la imagen)
+   		* docker images 
+   		* docker search mongo (busca en docker hub)
+   		* docker pull mongo  (descarga la imgen)	
+
+3. Se creara y levantara el contenedor creado con la base de datos de mongoDB,
+   mostrar los contenedores en funcionamiento
+	Comandos:
+		* docker run --name="ContenedorConMongo" -d mongo
+		* docker ps -a 
+
+4. Conectar modo bash al contenedor recientemente creado con mondoDB
+   y conectarme a mongoDB
+	Comandos: 
+		* docker exec -it id_contenedor bash
+		* ls (para saber que estamos en la consola del contenedor)
+
+5. crear un nuevo usuario con permisos de administrador, desconectarse y
+   loguearse con este usuario.
+	Comandos: 
+		* mongo
+		* show dbs
+		* use admin
+		* db.createUser({user: "superAdmin",pwd: "superAdmin", roles:[{role:"userAdminAnyDatabase", db:"admin"}]  })
+		* db.getUsers()		 
+
+6. Una vez logueado con este usuario, crear otro usuario con permisos 
+   de readWrite, despues nos logueamos con este usuario.  
+	Comandos: 
+		* ctr + d (para salir de mongoDB y aparecer en bash)
+		* mongo --port 27017 -u superAdmin -p superAdmin --authenticationDataBase admin
+		* db.createUser({user: "usuariocomun",pwd: "usuariocomun", roles:[{role:"readWrite", db:"test"}]  })
+		* db.getUsers()
+		* ctrl + d
+		* mongo --port 27017 -u usuariocomun -p usuariocomun --authenticationDatabase test
+		
+
+7. creamos una base de datos con este usuario, y le aniadimos un documento
+   a la base de datos, para que esta base de datos sea persistente.
+	Comandos: 
+		* db (para saber en que base de datos estamos)
+		* use Banco (creamos una base de datos llamada banco)
+		* db (para saber en que base de datos estamos)
+		* db.cuenta.insert({ titular: "Pablo Pedraza", numCuenta: "15019072"})
+		* db.cuenta.find() (Para corroborar la insercion de datos)
+
+
+8. Conectarme desde ROBO3T al contenedor con mongoDB con el user: usuariocomun 
+	Comandos: 
+		* ctrl + d (salimos del modo bash del contenedor)
+		* docker ps -a (Para ver los contenedores que estan en funcionamiento)
+		* docker inspect 512 | grep IPAddres (Para saber la IP del contenedor con mongoDB)
+		
